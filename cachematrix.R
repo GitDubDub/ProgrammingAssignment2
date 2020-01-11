@@ -1,15 +1,33 @@
-## Put comments here that give an overall description of what your
-## functions do
 
-## Write a short comment describing this function
+## THis function creates a matrix object that can cashe its inverse.
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  I <- NULL
+  set <- function(y){
+    x <<- y
+    I <<- NULL
+  }
+  get <- function() x
+  setI <- function(solve) I <<- solve
+  getI <- function() I
+  list(set = set, get = get,
+       setI = setI,
+       getI = getI)
 }
 
 
-## Write a short comment describing this function
+## This function computes the inverse of a matrix returned by FUN makeCasheMatrix above
+## If the inv. has already been calc'd and the matrix has not changed, then this
+## function retrieves the inverse already stored in the cashe.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  I <- x$getI()
+  if(!is.null(I)) {
+    message("getting cashed data")
+    return(I)
+  }
+  data <- x$get()
+  I <- solve(data, ...)
+  x$setI(I)
+  I
 }
